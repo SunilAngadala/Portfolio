@@ -148,12 +148,11 @@ export default function AnalyticsPage() {
     }
     async function fetchActive() {
       try {
-        const data = await umamiGet<{ x: string; y: number }[]>(
+        const data = await umamiGet<{ x: number }>(
           `/websites/${WEBSITE_ID}/active`,
           {},
         )
-        const total = Array.isArray(data) ? data.reduce((sum, d) => sum + (d.y ?? 0), 0) : 0
-        setActiveVisitors(total)
+        setActiveVisitors(typeof data?.x === 'number' ? data.x : 0)
       } catch {
         // silently ignore active poll errors
       }
@@ -301,7 +300,7 @@ export default function AnalyticsPage() {
               : []),
             {
               label: range === 'live' ? 'Visitors (1h)' : 'Unique visitors',
-              value: stats?.visitors?.value?.toLocaleString() ?? '—',
+              value: (stats?.visitors?.value ?? 0).toLocaleString(),
               delta:
                 stats?.visitors != null ? (
                   <Delta current={stats.visitors.value ?? 0} prev={stats.visitors.prev ?? 0} />
@@ -309,7 +308,7 @@ export default function AnalyticsPage() {
             },
             {
               label: range === 'live' ? 'Page views (1h)' : 'Page views',
-              value: stats?.pageviews?.value?.toLocaleString() ?? '—',
+              value: (stats?.pageviews?.value ?? 0).toLocaleString(),
               delta:
                 stats?.pageviews != null ? (
                   <Delta current={stats.pageviews.value ?? 0} prev={stats.pageviews.prev ?? 0} />
