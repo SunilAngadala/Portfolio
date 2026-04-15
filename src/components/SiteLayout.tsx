@@ -10,6 +10,7 @@ const navItems = [
   { to: '/experience', label: 'Experience' },
   { to: '/projects', label: "Systems I've Built" },
   { to: '/contact', label: "Let's Connect" },
+  { to: '/analytics', label: 'Analytics' },
 ]
 
 const routeMeta = {
@@ -54,6 +55,15 @@ const routeMeta = {
       { label: 'Email and phone', targetId: 'contact-methods' },
       { label: 'Resume access', targetId: 'contact-resume' },
       { label: 'Education', targetId: 'contact-education' },
+    ],
+  },
+  '/analytics': {
+    label: 'Analytics',
+    breadcrumb: 'Metrics',
+    highlights: [
+      { label: 'Overview', targetId: 'top' },
+      { label: 'Top pages', targetId: 'top' },
+      { label: 'Traffic sources', targetId: 'top' },
     ],
   },
 } as const
@@ -179,7 +189,7 @@ function SiteLayout() {
             ))}
           </nav>
 
-          <a className="button button-secondary" href={resumeFile} download>
+          <a className="button button-secondary" data-umami-event="Download Resume" href={resumeFile} download>
             Download Resume
           </a>
         </div>

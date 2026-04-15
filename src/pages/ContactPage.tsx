@@ -26,6 +26,7 @@ function ContactPage() {
               <button
                 aria-label="Copy email"
                 className="copy-button"
+                data-umami-event="Copy Email"
                 onClick={() => void copyValue(contact.email, 'email')}
                 type="button"
               >
@@ -41,6 +42,7 @@ function ContactPage() {
               <button
                 aria-label="Copy phone number"
                 className="copy-button"
+                data-umami-event="Copy Phone"
                 onClick={() => void copyValue(contact.phoneDisplay, 'phone')}
                 type="button"
               >
@@ -50,6 +52,7 @@ function ContactPage() {
 
             <a
               className="contact-method"
+              data-umami-event="GitHub Click"
               href="https://github.com/SunilAngadala"
               rel="noopener noreferrer"
               target="_blank"
@@ -58,7 +61,7 @@ function ContactPage() {
               <strong>github.com/SunilAngadala</strong>
             </a>
 
-            <a className="contact-method" href={resumeFile} target="_blank" rel="noopener noreferrer" id="contact-resume">
+            <a className="contact-method" data-umami-event="View Resume" href={resumeFile} target="_blank" rel="noopener noreferrer" id="contact-resume">
                 <span>Resume</span>
                 <strong>View Resume</strong>
             </a>
