@@ -9,7 +9,7 @@ const homeHighlights = [
   },
   {
     title: 'Core stack',
-    body: 'React, Angular, TypeScript, Node.js, real-time systems, and CMS-backed enterprise platforms.',
+    body: 'React, Angular, TypeScript, Node.js, chatbot integrations, real-time systems, and CMS-backed enterprise platforms.',
   },
 ]
 
