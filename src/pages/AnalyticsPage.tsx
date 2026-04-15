@@ -17,11 +17,18 @@ const BASE = 'https://api.umami.is/v1'
 type RangeKey = 'live' | 7 | 30 | 90
 
 interface UmamiStats {
-  pageviews: { value: number; prev: number }
-  visitors: { value: number; prev: number }
-  visits: { value: number; prev: number }
-  bounces: { value: number; prev: number }
-  totaltime: { value: number; prev: number }
+  pageviews: number
+  visitors: number
+  visits: number
+  bounces: number
+  totaltime: number
+  comparison?: {
+    pageviews: number
+    visitors: number
+    visits: number
+    bounces: number
+    totaltime: number
+  }
 }
 
 interface Metric {
@@ -148,11 +155,11 @@ export default function AnalyticsPage() {
     }
     async function fetchActive() {
       try {
-        const data = await umamiGet<{ x: number }>(
+        const data = await umamiGet<{ visitors: number }>(
           `/websites/${WEBSITE_ID}/active`,
           {},
         )
-        setActiveVisitors(typeof data?.x === 'number' ? data.x : 0)
+        setActiveVisitors(typeof data?.visitors === 'number' ? data.visitors : 0)
       } catch {
         // silently ignore active poll errors
       }
@@ -185,7 +192,7 @@ export default function AnalyticsPage() {
             umamiGet<Metric[]>(`/websites/${WEBSITE_ID}/metrics`, {
               startAt,
               endAt,
-              type: 'url',
+              type: 'path',
               limit: '10',
             }),
             umamiGet<Metric[]>(`/websites/${WEBSITE_ID}/metrics`, {
@@ -248,13 +255,13 @@ export default function AnalyticsPage() {
   }, [range])
 
   const avgDuration =
-    stats?.visits?.value && stats.visits.value > 0 && stats?.totaltime?.value != null
-      ? formatDuration(Math.round(stats.totaltime.value / stats.visits.value))
+    stats && stats.visits > 0
+      ? formatDuration(Math.round(stats.totaltime / stats.visits))
       : '—'
 
   const bounceRate =
-    stats?.visits?.value && stats.visits.value > 0 && stats?.bounces?.value != null
-      ? `${Math.round((stats.bounces.value / stats.visits.value) * 100)}%`
+    stats && stats.visits > 0
+      ? `${Math.round((stats.bounces / stats.visits) * 100)}%`
       : '—'
 
   return (
@@ -300,18 +307,18 @@ export default function AnalyticsPage() {
               : []),
             {
               label: range === 'live' ? 'Visitors (1h)' : 'Unique visitors',
-              value: (stats?.visitors?.value ?? 0).toLocaleString(),
+              value: (stats?.visitors ?? 0).toLocaleString(),
               delta:
-                stats?.visitors != null ? (
-                  <Delta current={stats.visitors.value ?? 0} prev={stats.visitors.prev ?? 0} />
+                stats != null ? (
+                  <Delta current={stats.visitors} prev={stats.comparison?.visitors ?? 0} />
                 ) : null,
             },
             {
               label: range === 'live' ? 'Page views (1h)' : 'Page views',
-              value: (stats?.pageviews?.value ?? 0).toLocaleString(),
+              value: (stats?.pageviews ?? 0).toLocaleString(),
               delta:
-                stats?.pageviews != null ? (
-                  <Delta current={stats.pageviews.value ?? 0} prev={stats.pageviews.prev ?? 0} />
+                stats != null ? (
+                  <Delta current={stats.pageviews} prev={stats.comparison?.pageviews ?? 0} />
                 ) : null,
             },
             {
