@@ -48,9 +48,19 @@ function ContactPage() {
               </button>
             </div>
 
-            <a className="contact-method" href={resumeFile} download id="contact-resume">
+            <a
+              className="contact-method"
+              href="https://github.com/SunilAngadala"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span>GitHub</span>
+              <strong>github.com/SunilAngadala</strong>
+            </a>
+
+            <a className="contact-method" href={resumeFile} target="_blank" rel="noopener noreferrer" id="contact-resume">
                 <span>Resume</span>
-                <strong>Download resume</strong>
+                <strong>View Resume</strong>
             </a>
           </div>
         </article>

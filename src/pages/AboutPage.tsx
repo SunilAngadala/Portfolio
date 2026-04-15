@@ -36,7 +36,7 @@ function AboutPage() {
           </div>
 
           <blockquote className="about-quote">
-            I care about understanding how systems work, not just making code run.
+            I care about how systems work, not just how code runs.
           </blockquote>
         </div>
 

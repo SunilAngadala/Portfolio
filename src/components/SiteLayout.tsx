@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { resumeFile } from '../content/portfolio'
 
+const brandTitles = ['System Traveller', 'Layer Navigator', 'Depth Seeker']
+
 const navItems = [
   { to: '/', label: 'Home', end: true },
   { to: '/about', label: 'About' },
   { to: '/experience', label: 'Experience' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/projects', label: "Systems I've Built" },
+  { to: '/contact', label: "Let's Connect" },
 ]
 
 const routeMeta = {
@@ -46,7 +48,7 @@ const routeMeta = {
     ],
   },
   '/contact': {
-    label: 'Contact',
+    label: "Let's Connect",
     breadcrumb: 'Connect',
     highlights: [
       { label: 'Email and phone', targetId: 'contact-methods' },
@@ -58,6 +60,19 @@ const routeMeta = {
 
 function SiteLayout() {
   const location = useLocation()
+  const [titleIndex, setTitleIndex] = useState(0)
+  const [titleVisible, setTitleVisible] = useState(true)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTitleVisible(false)
+      setTimeout(() => {
+        setTitleIndex((prev) => (prev + 1) % brandTitles.length)
+        setTitleVisible(true)
+      }, 400)
+    }, 6000)
+    return () => clearInterval(interval)
+  }, [])
   const currentRoute = routeMeta[location.pathname as keyof typeof routeMeta] ?? {
     label: 'Portfolio',
     breadcrumb: 'Section',
@@ -140,7 +155,12 @@ function SiteLayout() {
             <span className="brand-mark">SA</span>
             <span className="brand-copy">
               <strong>Sunil Angadala</strong>
-              <span>Senior Software Engineer</span>
+              <span
+                className="brand-subtitle"
+                style={{ opacity: titleVisible ? 1 : 0 }}
+              >
+                {brandTitles[titleIndex]}
+              </span>
             </span>
           </NavLink>
 

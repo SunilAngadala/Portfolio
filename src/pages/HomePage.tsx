@@ -18,7 +18,7 @@ function HomePage() {
     <div className="route-shell home-route">
       <section className="hero-section section-grid" id="home-strengths">
         <div className="hero-copy reveal reveal-delay-1">
-          <p className="eyebrow">15+ years leading enterprise platform delivery</p>
+          <p className="eyebrow">15+ years building scalable systems</p>
           <h1 className="hero-title">
             Architecting enterprise platforms and leading frontend modernization.
           </h1>
