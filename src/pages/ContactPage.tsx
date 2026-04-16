@@ -52,6 +52,17 @@ function ContactPage() {
 
             <a
               className="contact-method"
+              data-umami-event="LinkedIn Click"
+              href="https://www.linkedin.com/in/sunilangadala/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span>LinkedIn</span>
+              <strong>linkedin.com/in/sunilangadala</strong>
+            </a>
+
+            <a
+              className="contact-method"
               data-umami-event="GitHub Click"
               href="https://github.com/SunilAngadala"
               rel="noopener noreferrer"
