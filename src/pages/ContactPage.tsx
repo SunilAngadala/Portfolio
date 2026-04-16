@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { contact, education, resumeFile } from '../content/portfolio'
 
 function ContactPage() {
-  const [copiedField, setCopiedField] = useState<'email' | 'phone' | null>(null)
+  const [copiedField, setCopiedField] = useState<'email' | null>(null)
 
-  const copyValue = async (value: string, field: 'email' | 'phone') => {
+  const copyValue = async (value: string, field: 'email') => {
     await navigator.clipboard.writeText(value)
     setCopiedField(field)
     window.setTimeout(() => {
@@ -31,22 +31,6 @@ function ContactPage() {
                 type="button"
               >
                 {copiedField === 'email' ? '✓' : '⧉'}
-              </button>
-            </div>
-
-            <div className="contact-method contact-method-inline">
-              <a className="contact-method-link" href={`tel:${contact.phoneLink}`}>
-                <span>Phone</span>
-                <strong>{contact.phoneDisplay}</strong>
-              </a>
-              <button
-                aria-label="Copy phone number"
-                className="copy-button"
-                data-umami-event="Copy Phone"
-                onClick={() => void copyValue(contact.phoneDisplay, 'phone')}
-                type="button"
-              >
-                {copiedField === 'phone' ? '✓' : '⧉'}
               </button>
             </div>
 
