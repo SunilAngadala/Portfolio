@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap');
 
 :root {
+  --accent-hue: 22;
   --bg: #090c14;
   --bg-soft: #111522;
   --panel: rgba(15, 19, 31, 0.82);
@@ -10,8 +11,8 @@
   --text-heading: #f5f7ff;
   --text-body: #d7ddef;
   --text-subtle: #98a2c3;
-  --accent: #f47848;
-  --accent-strong: #f7b267;
+  --accent: hsl(var(--accent-hue), 88%, 63%);
+  --accent-strong: hsl(calc(var(--accent-hue) + 13), 90%, 70%);
   --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.22);
   --shadow-lg: 0 36px 90px rgba(0, 0, 0, 0.34);
   --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
@@ -40,7 +41,7 @@ body {
   min-width: 320px;
   min-height: 100svh;
   background:
-    radial-gradient(circle at top, rgba(112, 146, 255, 0.18), transparent 30%),
+    radial-gradient(circle at top, hsla(calc(var(--accent-hue) + 195), 80%, 72%, 0.18), transparent 30%),
     linear-gradient(180deg, #0b0f18 0%, #080a12 100%);
 }
 
@@ -48,7 +49,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 20% 10%, rgba(244, 120, 72, 0.08), transparent 22%);
+  background: radial-gradient(circle at 20% 10%, hsla(var(--accent-hue), 88%, 63%, 0.08), transparent 22%);
   pointer-events: none;
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { resumeFile } from '../content/portfolio'
+import ThemeSlider from './ThemeSlider'
 
 const brandTitles = ['System Traveller', 'Layer Navigator', 'Depth Seeker']
 
@@ -192,6 +193,7 @@ function SiteLayout() {
           <a className="button button-secondary" data-umami-event="Download Resume" href={resumeFile} download>
             Download Resume
           </a>
+          <ThemeSlider />
         </div>
 
         <div className="site-subnav" aria-label="Section breadcrumb and quick links">
