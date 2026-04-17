@@ -2,8 +2,6 @@ export const resumeFile = '/SunilAngadala_Resume.docx'
 
 export const contact = {
   email: 'angadalasunilyadav@gmail.com',
-  phoneDisplay: '320-360-9437',
-  phoneLink: '+13203609437',
 }
 
 export const strengths = [

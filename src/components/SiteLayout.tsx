@@ -53,7 +53,7 @@ const routeMeta = {
     label: "Let's Connect",
     breadcrumb: 'Connect',
     highlights: [
-      { label: 'Email and phone', targetId: 'contact-methods' },
+      { label: 'Email and socials', targetId: 'contact-methods' },
       { label: 'Resume access', targetId: 'contact-resume' },
       { label: 'Education', targetId: 'contact-education' },
     ],
