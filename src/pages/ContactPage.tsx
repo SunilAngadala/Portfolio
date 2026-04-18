@@ -19,19 +19,21 @@ function ContactPage() {
           <p className="eyebrow">Professional contact</p>
           <div className="contact-method-grid">
             <div className="contact-method contact-method-inline">
-              <a className="contact-method-link" href={`mailto:${contact.email}`}>
+              <div className="contact-method-label-row">
                 <span>Email</span>
+                <button
+                  aria-label="Copy email"
+                  className="copy-button"
+                  data-umami-event="Copy Email"
+                  onClick={() => void copyValue(contact.email, 'email')}
+                  type="button"
+                >
+                  {copiedField === 'email' ? '✓' : '⧉'}
+                </button>
+              </div>
+              <a className="contact-method-link" href={`mailto:${contact.email}`}>
                 <strong>{contact.email}</strong>
               </a>
-              <button
-                aria-label="Copy email"
-                className="copy-button"
-                data-umami-event="Copy Email"
-                onClick={() => void copyValue(contact.email, 'email')}
-                type="button"
-              >
-                {copiedField === 'email' ? '✓' : '⧉'}
-              </button>
             </div>
 
             <a

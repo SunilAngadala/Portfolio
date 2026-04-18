@@ -1259,14 +1259,19 @@
 }
 
 .contact-method-inline {
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-method-label-row {
+  display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
 }
 
 .contact-method-link {
-  display: grid;
-  gap: 8px;
+  display: block;
   color: inherit;
   text-decoration: none;
 }
