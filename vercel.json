@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/analytics.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -9,9 +14,13 @@
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://analytics.umami.is; connect-src 'self' https://api.umami.is https://vitals.vercel-insights.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://umami-production-d42d.up.railway.app; connect-src 'self' https://umami-production-d42d.up.railway.app https://vitals.vercel-insights.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-ancestors 'none';"
         }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

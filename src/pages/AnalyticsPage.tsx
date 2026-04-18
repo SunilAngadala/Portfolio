@@ -11,8 +11,30 @@ import {
 import './AnalyticsPage.css'
 
 const WEBSITE_ID = import.meta.env.VITE_UMAMI_WEBSITE_ID as string
-const API_TOKEN = import.meta.env.VITE_UMAMI_API_TOKEN as string
-const BASE = 'https://api.umami.is/v1'
+
+// In local dev (Vite), Vercel serverless functions don't run.
+// Use direct Umami calls with dev-only VITE_ credentials from .env
+const IS_DEV = import.meta.env.DEV
+const DEV_UMAMI_BASE = import.meta.env.VITE_UMAMI_BASE as string | undefined
+const DEV_UMAMI_USER = import.meta.env.VITE_UMAMI_USERNAME as string | undefined
+const DEV_UMAMI_PASS = import.meta.env.VITE_UMAMI_PASSWORD as string | undefined
+
+let cachedToken: string | null = null
+let tokenExpiry = 0
+
+async function getDevToken(): Promise<string> {
+  if (cachedToken && Date.now() < tokenExpiry) return cachedToken
+  const res = await fetch(`${DEV_UMAMI_BASE}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: DEV_UMAMI_USER, password: DEV_UMAMI_PASS }),
+  })
+  if (!res.ok) throw new Error('Umami auth failed')
+  const data = await res.json() as { token: string }
+  cachedToken = data.token
+  tokenExpiry = Date.now() + 20 * 60 * 1000
+  return cachedToken
+}
 
 type RangeKey = 'live' | 7 | 30 | 90
 
@@ -60,12 +82,28 @@ const RANGE_OPTIONS: { label: string; key: RangeKey }[] = [
 ]
 
 async function umamiGet<T>(path: string, params: Record<string, string>): Promise<T> {
-  const url = new URL(`${BASE}${path}`)
+  if (IS_DEV && DEV_UMAMI_BASE) {
+    // Local dev: call Railway Umami directly
+    const token = await getDevToken()
+    const url = new URL(`${DEV_UMAMI_BASE}/api${path}`)
+    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
+    const res = await fetch(url.toString(), { headers: { Authorization: `Bearer ${token}` } })
+    if (res.status === 401) {
+      cachedToken = null
+      const fresh = await getDevToken()
+      const res2 = await fetch(url.toString(), { headers: { Authorization: `Bearer ${fresh}` } })
+      if (!res2.ok) throw new Error(`Umami API ${res2.status}`)
+      return res2.json() as Promise<T>
+    }
+    if (!res.ok) throw new Error(`Umami API ${res.status}`)
+    return res.json() as Promise<T>
+  }
+  // Production: go through Vercel serverless proxy
+  const url = new URL('/api/analytics', window.location.origin)
+  url.searchParams.set('endpoint', path)
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
-  const res = await fetch(url.toString(), {
-    headers: { Authorization: `Bearer ${API_TOKEN}` },
-  })
-  if (!res.ok) throw new Error(`Umami API returned ${res.status}`)
+  const res = await fetch(url.toString())
+  if (!res.ok) throw new Error(`Analytics API returned ${res.status}`)
   return res.json() as Promise<T>
 }
 
