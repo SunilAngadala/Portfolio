@@ -33,11 +33,6 @@ module.exports = async function handler(req, res) {
 
   if (!endpoint) return res.status(400).json({ error: 'Missing endpoint param' })
 
-  // Basic shape check — must be a /websites/.../... path
-  if (!/^\/websites\/[a-f0-9-]{36}\//.test(endpoint)) {
-    return res.status(400).json({ error: 'Invalid endpoint' })
-  }
-
   try {
     const token = await getToken()
     const url = new URL(`${UMAMI_BASE}/api${endpoint}`)
