@@ -1293,8 +1293,11 @@
 
 .contact-method strong {
   color: var(--text-heading);
-  font-size: 1.06rem;
+  font-size: clamp(0.82rem, 3.5vw, 1.06rem);
   line-height: 1.35;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .copy-button {
@@ -2857,6 +2860,11 @@
 
   .contact-card-primary {
     min-height: auto;
+    padding: 16px;
+  }
+
+  .contact-method {
+    padding: 12px 14px 14px;
   }
 
   /* Restore sticky header on mobile for easy navigation */
