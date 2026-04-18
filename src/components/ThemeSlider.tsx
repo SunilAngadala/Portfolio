@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 const STORAGE_KEY = 'accent-hue'
-const DEFAULT_HUE = 22
+const DEFAULT_HUE = 270
 
 function applyHue(hue: number) {
   document.documentElement.style.setProperty('--accent-hue', String(hue))

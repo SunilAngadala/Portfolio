@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { resumeFile } from '../content/portfolio'
 import ThemeSlider from './ThemeSlider'
@@ -73,6 +73,9 @@ function SiteLayout() {
   const location = useLocation()
   const [titleIndex, setTitleIndex] = useState(0)
   const [titleVisible, setTitleVisible] = useState(true)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false)
+  const moreRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -84,6 +87,25 @@ function SiteLayout() {
     }, 6000)
     return () => clearInterval(interval)
   }, [])
+
+  // Close mobile nav and more dropdown on route change
+  useEffect(() => {
+    setMobileNavOpen(false)
+    setMobileMoreOpen(false)
+  }, [location.pathname])
+
+  // Close More dropdown on outside click
+  useEffect(() => {
+    if (!mobileMoreOpen) return undefined
+    const handler = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMobileMoreOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [mobileMoreOpen])
+
   const currentRoute = routeMeta[location.pathname as keyof typeof routeMeta] ?? {
     label: 'Portfolio',
     breadcrumb: 'Section',
@@ -162,6 +184,7 @@ function SiteLayout() {
     <div className="page-shell" id="top">
       <header className="site-header">
         <div className="site-header-main">
+          {/* Desktop brand — hidden on mobile */}
           <NavLink className="brand" to="/" end aria-label="Sunil Angadala home">
             <span className="brand-mark">SA</span>
             <span className="brand-copy">
@@ -175,7 +198,36 @@ function SiteLayout() {
             </span>
           </NavLink>
 
-          <nav className="site-nav" aria-label="Primary navigation">
+          {/* Mobile-only: hamburger Menu button */}
+          <button
+            className="site-mobile-menu-btn"
+            onClick={() => setMobileNavOpen((v) => !v)}
+            type="button"
+            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileNavOpen}
+          >
+            <span className="site-mobile-menu-icon">{mobileNavOpen ? '✕' : '☰'}</span>
+          </button>
+
+          {/* Mobile-only: center brand + breadcrumb */}
+          <div className="site-mobile-topbar-center">
+            <div className="site-mobile-topbar-brand">
+              <span className="brand-mark">SA</span>
+              <strong className="site-mobile-topbar-name">Sunil Angadala</strong>
+            </div>
+            {location.pathname !== '/' && (
+              <div className="site-mobile-topbar-crumb">
+                <Link className="site-mobile-topbar-home" to="/">Home</Link>
+                <span className="site-mobile-topbar-sep">›</span>
+                <span className="site-mobile-topbar-page">{currentRoute.label}</span>
+              </div>
+            )}
+          </div>
+
+          <nav
+            className={mobileNavOpen ? 'site-nav site-nav-mobile-open' : 'site-nav'}
+            aria-label="Primary navigation"
+          >
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -190,10 +242,42 @@ function SiteLayout() {
             ))}
           </nav>
 
+          {/* Desktop: Download Resume */}
           <a className="button button-secondary" data-umami-event="Download Resume" href={resumeFile} download>
             Download Resume
           </a>
           <ThemeSlider />
+
+          {/* Mobile-only: More (⋮) with Download Resume dropdown */}
+          <div className="site-mobile-more-wrap" ref={moreRef}>
+            <button
+              className="site-mobile-more-btn"
+              onClick={() => setMobileMoreOpen((v) => !v)}
+              type="button"
+              aria-label="More options"
+              aria-expanded={mobileMoreOpen}
+            >
+              <span className="site-mobile-more-icon">⋮</span>
+            </button>
+            {mobileMoreOpen && (
+              <div className="site-mobile-more-dropdown" role="menu">
+                <a
+                  className="site-mobile-more-item"
+                  data-umami-event="Download Resume"
+                  href={resumeFile}
+                  download
+                  role="menuitem"
+                  onClick={() => setMobileMoreOpen(false)}
+                >
+                  Download Resume ↓
+                </a>
+                <div className="site-mobile-more-divider" />
+                <div className="site-mobile-more-theme">
+                  <ThemeSlider />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="site-subnav" aria-label="Section breadcrumb and quick links">

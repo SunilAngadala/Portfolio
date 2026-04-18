@@ -240,7 +240,7 @@ export default function AnalyticsPage() {
         setReferrers(referrersData)
         setDevices(devicesData)
         setBrowsers(browsersData)
-        setEvents(eventsData)
+        setEvents(eventsData.filter((e) => e.x !== 'Copy Phone'))
       } catch (err) {
         if (!controller.signal.aborted) {
           setError(err instanceof Error ? err.message : 'Failed to load analytics')

@@ -96,7 +96,7 @@ function ProjectsPage() {
 
     const timer = window.setInterval(() => {
       setActiveIndex((currentIndex) => (currentIndex + 1) % featuredWork.length)
-    }, 3200)
+    }, 12000)
 
     return () => {
       window.clearInterval(timer)
@@ -125,6 +125,29 @@ function ProjectsPage() {
   return (
     <div className="route-shell projects-route">
       <section className="projects-carousel reveal" id="projects-featured">
+        {/* Mobile-only dot nav — hidden on desktop */}
+        <div className="projects-mobile-nav" aria-label="Project navigation">
+          <button className="projects-mobile-arrow" onClick={showPrevious} type="button" aria-label="Previous project">
+            ←
+          </button>
+          <div className="projects-mobile-dots" role="tablist">
+            {featuredWork.map((item, index) => (
+              <button
+                key={item.title}
+                className={index === activeIndex ? 'projects-dot projects-dot-active' : 'projects-dot'}
+                onClick={() => showSlide(index)}
+                type="button"
+                role="tab"
+                aria-selected={index === activeIndex}
+                aria-label={item.title}
+              />
+            ))}
+          </div>
+          <button className="projects-mobile-arrow" onClick={showNext} type="button" aria-label="Next project">
+            →
+          </button>
+        </div>
+
         <div className="projects-stage" id="projects-visuals">
           {featuredWork.map((item, index) => (
             <article

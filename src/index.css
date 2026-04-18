@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap');
 
 :root {
-  --accent-hue: 22;
+  --accent-hue: 270;
   --bg: #090c14;
   --bg-soft: #111522;
   --panel: rgba(15, 19, 31, 0.82);
@@ -15,12 +15,12 @@
   --accent-strong: hsl(calc(var(--accent-hue) + 13), 90%, 70%);
   --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.22);
   --shadow-lg: 0 36px 90px rgba(0, 0, 0, 0.34);
-  --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
-  --font-heading: 'Outfit', 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', Consolas, monospace;
+  --font-body: 'Geist', 'Segoe UI', sans-serif;
+  --font-heading: 'Geist', 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', Consolas, monospace;
   color: var(--text-body);
   background: var(--bg);
-  font: 18px/1.6 var(--font-body);
+  font: 16px/1.6 var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
