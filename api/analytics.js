@@ -4,7 +4,6 @@
 const UMAMI_BASE = process.env.UMAMI_BASE
 const UMAMI_USER = process.env.UMAMI_USERNAME
 const UMAMI_PASS = process.env.UMAMI_PASSWORD
-const WEBSITE_ID = process.env.UMAMI_WEBSITE_ID
 
 let cachedToken = null
 let tokenExpiry = 0
@@ -34,15 +33,9 @@ module.exports = async function handler(req, res) {
 
   if (!endpoint) return res.status(400).json({ error: 'Missing endpoint param' })
 
-  // Only allow requests scoped to our website ID
-  const allowedPrefixes = [
-    `/websites/${WEBSITE_ID}/stats`,
-    `/websites/${WEBSITE_ID}/pageviews`,
-    `/websites/${WEBSITE_ID}/metrics`,
-    `/websites/${WEBSITE_ID}/active`,
-  ]
-  if (!allowedPrefixes.some((p) => endpoint.startsWith(p))) {
-    return res.status(403).json({ error: 'Forbidden endpoint' })
+  // Basic shape check — must be a /websites/.../... path
+  if (!/^\/websites\/[a-f0-9-]{36}\//.test(endpoint)) {
+    return res.status(400).json({ error: 'Invalid endpoint' })
   }
 
   try {
